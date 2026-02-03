@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Frog Facts</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐸</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -12,20 +15,27 @@
       box-sizing: border-box;
     }
 
+    html {
+      min-height: 100%;
+      background: linear-gradient(135deg, #2d5a27 0%, #1a3a15 100%);
+      background-attachment: fixed;
+    }
+
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #2d5a27 0%, #1a3a15 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-family: 'Georgia', serif;
-      overflow: hidden;
+      font-family: 'Nunito', sans-serif;
+      overflow-x: hidden;
+      padding: 20px;
     }
 
     h1 {
       color: #90EE90;
       font-size: 3rem;
+      font-weight: 800;
       margin-bottom: 2rem;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
@@ -212,7 +222,7 @@
       transform: translateY(50px) scale(0.5);
       transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
       text-align: center;
-      font-weight: 500;
+      font-weight: 700;
     }
 
     .fact-bubble.show {
