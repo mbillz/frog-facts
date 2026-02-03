@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frog Facts</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐸</text></svg>">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #2d5a27 0%, #1a3a15 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Georgia', serif;
+      overflow: hidden;
+    }
+
+    h1 {
+      color: #90EE90;
+      font-size: 3rem;
+      margin-bottom: 2rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .frog-container {
+      position: relative;
+      width: 600px;
+      height: 450px;
+    }
+
+    .frog {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Frog body */
+    .frog-body {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 280px;
+      background: linear-gradient(180deg, #4a7c39 0%, #3d6b2e 100%);
+      border-radius: 50% 50% 45% 45%;
+      box-shadow: inset -20px -20px 40px rgba(0,0,0,0.2),
+                  inset 20px 20px 40px rgba(255,255,255,0.1);
+    }
+
+    /* Spots on body */
+    .frog-body::before {
+      content: '';
+      position: absolute;
+      top: 30%;
+      left: 18%;
+      width: 45px;
+      height: 30px;
+      background: #3d6b2e;
+      border-radius: 50%;
+    }
+
+    .frog-body::after {
+      content: '';
+      position: absolute;
+      top: 40%;
+      right: 20%;
+      width: 40px;
+      height: 25px;
+      background: #3d6b2e;
+      border-radius: 50%;
+    }
+
+    /* Eyes */
+    .eye {
+      position: absolute;
+      top: 10px;
+      width: 110px;
+      height: 110px;
+      background: linear-gradient(180deg, #4a7c39 0%, #3d6b2e 100%);
+      border-radius: 50%;
+    }
+
+    .eye-left {
+      left: 100px;
+    }
+
+    .eye-right {
+      right: 100px;
+    }
+
+    .eyeball {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 70px;
+      background: #fffef0;
+      border-radius: 50%;
+    }
+
+    .pupil {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 35px;
+      height: 50px;
+      background: #1a1a1a;
+      border-radius: 50%;
+    }
+
+    .pupil::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      right: 6px;
+      width: 12px;
+      height: 12px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    /* Mouth */
+    .mouth {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 180px;
+      height: 25px;
+      background: #2d1f1f;
+      border-radius: 0 0 90px 90px;
+      transition: height 0.3s ease;
+      overflow: hidden;
+    }
+
+    .mouth.open {
+      height: 110px;
+      border-radius: 10px 10px 90px 90px;
+    }
+
+    /* Tongue */
+    .tongue {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 0;
+      background: linear-gradient(90deg, #e75480 0%, #ff6b9d 50%, #e75480 100%);
+      border-radius: 20px;
+      transition: height 0.5s ease;
+      z-index: 3;
+    }
+
+    .tongue.out {
+      height: 380px;
+    }
+
+    /* Front legs */
+    .leg-front {
+      position: absolute;
+      bottom: -15px;
+      width: 90px;
+      height: 60px;
+      background: #4a7c39;
+      border-radius: 50% 50% 30% 30%;
+    }
+
+    .leg-front-left {
+      left: 80px;
+      transform: rotate(-15deg);
+    }
+
+    .leg-front-right {
+      right: 80px;
+      transform: rotate(15deg);
+    }
+
+    /* Fact bubble */
+    .fact-container {
+      position: relative;
+      margin-bottom: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+      height: 140px;
+    }
+
+    .fact-bubble {
+      position: absolute;
+      top: 0;
+      background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);
+      padding: 25px 35px;
+      border-radius: 20px;
+      max-width: 500px;
+      font-size: 1.3rem;
+      color: #2d5a27;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      opacity: 0;
+      transform: translateY(50px) scale(0.5);
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .fact-bubble.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .fact-bubble::before {
+      content: '🐸';
+      display: block;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    /* Countdown */
+    .countdown {
+      position: fixed;
+      bottom: 20px;
+      color: rgba(255,255,255,0.6);
+      font-size: 1rem;
+    }
+
+    /* Mobile styles */
+    @media (max-width: 700px) {
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .frog-container {
+        width: 320px;
+        height: 260px;
+      }
+
+      .frog-body {
+        width: 280px;
+        height: 160px;
+      }
+
+      .eye {
+        width: 60px;
+        height: 60px;
+      }
+
+      .eye-left {
+        left: 55px;
+      }
+
+      .eye-right {
+        right: 55px;
+      }
+
+      .eyeball {
+        width: 40px;
+        height: 40px;
+        top: 12px;
+      }
+
+      .pupil {
+        width: 20px;
+        height: 28px;
+      }
+
+      .pupil::after {
+        width: 7px;
+        height: 7px;
+        top: 5px;
+        right: 4px;
+      }
+
+      .mouth {
+        width: 100px;
+        height: 15px;
+        bottom: 50px;
+      }
+
+      .mouth.open {
+        height: 60px;
+      }
+
+      .tongue {
+        width: 25px;
+        bottom: 50px;
+      }
+
+      .tongue.out {
+        height: 220px;
+      }
+
+      .leg-front {
+        width: 50px;
+        height: 35px;
+        bottom: -10px;
+      }
+
+      .leg-front-left {
+        left: 45px;
+      }
+
+      .leg-front-right {
+        right: 45px;
+      }
+
+      .frog-body::before {
+        width: 25px;
+        height: 18px;
+      }
+
+      .frog-body::after {
+        width: 22px;
+        height: 15px;
+      }
+
+      .fact-container {
+        height: 120px;
+        padding: 0 15px;
+      }
+
+      .fact-bubble {
+        padding: 15px 20px;
+        font-size: 1rem;
+        max-width: 90vw;
+      }
+
+      .fact-bubble::before {
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Frog Facts!</h1>
+
+  <div class="fact-container">
+    <div class="fact-bubble" id="factBubble"></div>
+  </div>
+
+  <div class="frog-container">
+    <div class="frog">
+      <div class="eye eye-left">
+        <div class="eyeball">
+          <div class="pupil"></div>
+        </div>
+      </div>
+      <div class="eye eye-right">
+        <div class="eyeball">
+          <div class="pupil"></div>
+        </div>
+      </div>
+      <div class="frog-body">
+        <div class="mouth" id="mouth"></div>
+        <div class="tongue" id="tongue"></div>
+        <div class="leg-front leg-front-left"></div>
+        <div class="leg-front leg-front-right"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="countdown" id="countdown">Next fact in: 10s</div>
+
+  <script>
+    const frogFacts = [
+      "Frogs don't drink water - they absorb it through their skin!",
+      "A group of frogs is called an 'army'.",
+      "The golden poison frog has enough toxin to kill 10 grown men.",
+      "Frogs can throw up their entire stomach, clean it, and swallow it back.",
+      "Some frogs can jump over 20 times their own body length.",
+      "Frogs have been on Earth for more than 200 million years.",
+      "The world's smallest frog is only 7.7mm long - smaller than a dime!",
+      "Frogs close their eyes to swallow food, pushing it down with their eyeballs.",
+      "Some frogs can survive being frozen solid and thaw back to life.",
+      "A frog's tongue can snap back into its mouth in under 0.07 seconds.",
+      "The glass frog has translucent skin - you can see its internal organs!",
+      "Frogs can lay up to 4,000 eggs at one time.",
+      "The waxy monkey frog secretes a waxy coating to prevent dehydration.",
+      "Some frogs can change color to regulate body temperature.",
+      "The wood frog can hold its pee for up to eight months during hibernation.",
+      "Frogs have teeth on their upper jaw, but toads have no teeth at all.",
+      "The red-eyed tree frog's bright eyes startle predators, allowing escape.",
+      "A frog's ear is called a tympanum and is located behind its eye.",
+      "The Goliath frog can grow up to 12.5 inches and weigh 7 pounds.",
+      "Frogs shed their skin about once a week and usually eat it.",
+      "The purple frog spends most of its life underground.",
+      "Some frogs have bones that glow through their skin under UV light.",
+      "The hairy frog breaks its own bones to produce claws when threatened.",
+      "Frogs breathe through their skin as well as their lungs.",
+      "The Australian water-holding frog stores water in its bladder for droughts.",
+      "Male Darwin's frogs carry tadpoles in their vocal sacs.",
+      "The paradoxical frog's tadpole is larger than the adult frog.",
+      "Some poison dart frogs are used by indigenous people to poison blow darts.",
+      "Frogs don't need to drink because they absorb moisture through their skin.",
+      "The African clawed frog was used for pregnancy tests in the 1940s.",
+      "A frog's tongue is attached at the front of its mouth, not the back.",
+      "The Malaysian horned frog looks exactly like a dead leaf.",
+      "Some frogs can glide through the air using webbed feet as parachutes.",
+      "The gastric brooding frog raised its young in its stomach (now extinct).",
+      "Frogs have excellent night vision and can see in color in near darkness.",
+      "The Vietnamese mossy frog looks like a clump of moss for camouflage.",
+      "Male frogs croak to attract females; each species has a unique call.",
+      "The tomato frog puffs up and secretes a glue-like substance when threatened.",
+      "Frogs have a third eyelid called a nictitating membrane to protect their eyes.",
+      "The Surinam toad carries eggs embedded in the skin of its back.",
+      "Some frogs can survive in saltwater environments.",
+      "The blue poison dart frog's color warns predators of its toxicity.",
+      "Frogs appeared before dinosaurs and survived the mass extinction.",
+      "The mountain chicken frog is one of the largest frogs in the world.",
+      "Some frogs estivate (summer hibernation) during hot, dry periods.",
+      "The Argentine horned frog will try to eat anything that fits in its mouth.",
+      "Frog bones form a new ring each year, like trees.",
+      "The flying frog can glide up to 50 feet between trees.",
+      "Some frogs are completely aquatic and never leave the water.",
+      "The strawberry poison dart frog carries tadpoles on its back to water.",
+      "Frogs have a highly developed sense of hearing.",
+      "The American bullfrog can eat birds, mice, and even other frogs.",
+      "Some frogs have fangs used for fighting other males.",
+      "The burrowing frog can stay underground for years waiting for rain.",
+      "Frogs were the first land animals to have vocal cords.",
+      "The coqui frog is named after its distinctive 'ko-kee' call.",
+      "Some frogs lay eggs in foam nests to protect them from drying out.",
+      "The African bullfrog father guards his tadpoles and digs channels for them.",
+      "Frogs can't turn their heads because of their short spinal column.",
+      "The ornate horned frog is often called a 'Pac-Man frog' due to its round shape.",
+      "Some tree frogs have suction cup toes for climbing smooth surfaces.",
+      "The desert rain frog makes a squeaky toy sound when threatened.",
+      "Frogs are found on every continent except Antarctica.",
+      "The mantellas of Madagascar evolved bright colors separately from poison dart frogs.",
+      "Some frogs can regenerate lost limbs to a limited degree.",
+      "The horned marsupial frog carries eggs in a pouch on its back.",
+      "Frogs were the first vertebrates to develop true ears.",
+      "The spring peeper's call can be heard up to a mile away.",
+      "Some frogs eat their own shed skin for the nutrients.",
+      "The fire-bellied toad displays its bright belly to warn predators.",
+      "Frogs have been to space - the first was in 1970.",
+      "The rocket frog can jump 150 times its body length.",
+      "Some frogs have vertical pupils while others have horizontal ones.",
+      "The pig-nosed frog was only discovered in 2003.",
+      "Frogs can't swallow with their eyes open.",
+      "The painted reed frog can change from brown to white in minutes.",
+      "Some male frogs guard their eggs until they hatch.",
+      "The corroboree frog is one of Australia's most endangered species.",
+      "Frogs have a unique respiratory system that uses their mouth to pump air.",
+      "The Malagasy rainbow frog is covered in colorful patterns.",
+      "Some frogs freeze solid in winter with ice crystals in their organs.",
+      "The poison dart frog's toxins are being researched for medical uses.",
+      "Frogs can distinguish between different frequencies of sound.",
+      "The Indian purple frog only surfaces for two weeks a year to mate.",
+      "Some frogs have teeth-like structures called odontoids.",
+      "The Titicaca water frog has extremely baggy skin to absorb more oxygen.",
+      "Frogs play a vital role in ecosystems as both predator and prey.",
+      "The Budgett's frog screams when threatened.",
+      "Some frogs communicate using ultrasonic calls humans can't hear.",
+      "The Solomon Island leaf frog skips the tadpole stage entirely.",
+      "Frogs have been symbols in cultures worldwide for thousands of years.",
+      "The crucifix frog gets its name from the cross pattern on its back.",
+      "Some frogs can detect ultraviolet light.",
+      "The Amazon milk frog secretes a milky substance when stressed.",
+      "Frogs help control insect populations including mosquitoes.",
+      "The lemur leaf frog sleeps with its eyes open.",
+      "Some frog species are entirely female and clone themselves to reproduce.",
+      "The Vietnamese blue frog was only discovered in 2013.",
+      "Frogs have been inspiring scientists in fields from robotics to medicine.",
+      "There are over 7,000 known species of frogs in the world."
+    ];
+
+    // Shuffle the facts array
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+    shuffle(frogFacts);
+
+    let currentFactIndex = 0;
+    let countdown = 10;
+
+    const mouth = document.getElementById('mouth');
+    const tongue = document.getElementById('tongue');
+    const factBubble = document.getElementById('factBubble');
+    const countdownEl = document.getElementById('countdown');
+
+    function showFrogFact() {
+      // Open mouth
+      mouth.classList.add('open');
+
+      // Extend tongue after mouth opens
+      setTimeout(() => {
+        tongue.classList.add('out');
+      }, 300);
+
+      // Show fact
+      setTimeout(() => {
+        factBubble.textContent = frogFacts[currentFactIndex];
+        factBubble.classList.add('show');
+        currentFactIndex = (currentFactIndex + 1) % frogFacts.length;
+      }, 600);
+
+      // Retract tongue
+      setTimeout(() => {
+        tongue.classList.remove('out');
+      }, 3000);
+
+      // Close mouth
+      setTimeout(() => {
+        mouth.classList.remove('open');
+      }, 3300);
+
+      // Hide fact
+      setTimeout(() => {
+        factBubble.classList.remove('show');
+      }, 6000);
+    }
+
+    function updateCountdown() {
+      countdown--;
+      if (countdown <= 0) {
+        countdown = 10;
+        showFrogFact();
+      }
+      countdownEl.textContent = `Next fact in: ${countdown}s`;
+    }
+
+    // Show first fact immediately
+    setTimeout(showFrogFact, 1000);
+
+    // Update countdown every second
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
