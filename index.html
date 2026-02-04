@@ -15,14 +15,17 @@
       box-sizing: border-box;
     }
 
-    html {
+    html, body {
       min-height: 100%;
-      background: linear-gradient(135deg, #2d5a27 0%, #1a3a15 100%);
-      background-attachment: fixed;
+      min-height: 100dvh;
+    }
+
+    html {
+      background: #1a3a15;
     }
 
     body {
-      min-height: 100vh;
+      background: linear-gradient(135deg, #2d5a27 0%, #1a3a15 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -204,17 +207,17 @@
       width: 100%;
       display: flex;
       justify-content: center;
+      align-items: flex-start;
       pointer-events: none;
       height: 140px;
     }
 
     .fact-bubble {
-      position: absolute;
-      top: 0;
       background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);
       padding: 25px 35px;
       border-radius: 20px;
       max-width: 500px;
+      width: calc(100% - 40px);
       font-size: 1.3rem;
       color: #2d5a27;
       box-shadow: 0 10px 30px rgba(0,0,0,0.3);
@@ -338,13 +341,13 @@
 
       .fact-container {
         height: 120px;
-        padding: 0 15px;
       }
 
       .fact-bubble {
         padding: 15px 20px;
         font-size: 1rem;
-        max-width: 90vw;
+        width: calc(100% - 20px);
+        max-width: none;
       }
 
       .fact-bubble::before {
