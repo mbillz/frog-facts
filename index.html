@@ -734,7 +734,6 @@
     </div>
   </div>
 
-  <div class="countdown" id="countdown">Next fact in: 10s</div>
 
   <script>
     const frogFacts = [
@@ -851,12 +850,10 @@
     shuffle(frogFacts);
 
     let currentFactIndex = 0;
-    let countdown = 10;
 
     const mouth = document.getElementById('mouth');
     const tongue = document.getElementById('tongue');
     const factBubble = document.getElementById('factBubble');
-    const countdownEl = document.getElementById('countdown');
 
     function showFrogFact() {
       // Open mouth
@@ -890,20 +887,9 @@
       }, 6000);
     }
 
-    function updateCountdown() {
-      countdown--;
-      if (countdown <= 0) {
-        countdown = 10;
-        showFrogFact();
-      }
-      countdownEl.textContent = `Next fact in: ${countdown}s`;
-    }
-
-    // Show first fact immediately
+    // Show first fact immediately, then every 10 seconds
     setTimeout(showFrogFact, 1000);
-
-    // Update countdown every second
-    setInterval(updateCountdown, 1000);
+    setInterval(showFrogFact, 10000);
   </script>
 </body>
 </html>
