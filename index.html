@@ -276,7 +276,12 @@
       font-size: 3rem;
       font-weight: 800;
       margin-bottom: 2rem;
-      text-shadow: 2px 2px 4px rgba(255,255,255,0.4);
+      text-shadow:
+        -2px -2px 0 #fff,
+        2px -2px 0 #fff,
+        -2px 2px 0 #fff,
+        2px 2px 0 #fff,
+        0 0 10px rgba(255,255,255,0.8);
       position: relative;
       z-index: 1;
     }
@@ -703,8 +708,6 @@
       <div class="ripple ripple-3"></div>
     </div>
   </div>
-
-  <h1>Frog Facts!</h1>
 
   <div class="fact-container">
     <div class="fact-bubble" id="factBubble"></div>
